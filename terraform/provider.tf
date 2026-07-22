@@ -11,7 +11,7 @@ terraform {
     bucket       = "terraform-state-mlops-delphi-cloud-beep"
     key          = "mlops/terraform.tfstate"
     region       = "eu-west-3"
-    use_lockfile = true
+   
     encrypt      = true
   }
 }
