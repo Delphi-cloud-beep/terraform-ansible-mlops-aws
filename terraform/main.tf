@@ -70,8 +70,7 @@ resource "aws_s3_bucket" "ml_artifacts" {
   force_destroy = true
 }
 
-# Clé SSH déclarée auprès d'AWS
 resource "aws_key_pair" "mlops_key" {
-  key_name   = "mlops-key-${var.environment}"
-  public_key = file(var.public_key_path)
+  key_name   = "mlops-key"
+  public_key = var.public_key
 }
