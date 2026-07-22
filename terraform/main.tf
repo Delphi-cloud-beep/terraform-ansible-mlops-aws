@@ -54,7 +54,8 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "mlops_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-
+  
+  key_name               = aws_key_pair.mlops_key.key_name
   vpc_security_group_ids = [aws_security_group.mlops_sg.id]
 
   tags = {
@@ -67,4 +68,10 @@ resource "aws_instance" "mlops_server" {
 resource "aws_s3_bucket" "ml_artifacts" {
   bucket        = "mlops-artifacts-delphi-cloud-beep-${var.environment}"
   force_destroy = true
+}
+
+# Clé SSH déclarée auprès d'AWS
+resource "aws_key_pair" "mlops_key" {
+  key_name   = "mlops-key-${var.environment}"
+  public_key = file(var.public_key_path)
 }
