@@ -32,7 +32,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
 
-      # 2. Exécuter Terraform avec -lock=false pour passe le verrou bloqué
+      # 2. Exécuter Terraform avec -lock=false pour passer le verrou bloqué
       - name: Terraform Init & Apply
         id: terraform
         run: |
@@ -49,4 +49,4 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           cd ansible
-          ansible-playbook -i "${{ env.EC2_IP }}," deploy.yml
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ~/.ssh/id_rsa -i "${{ env.EC2_IP }}," playbook.yml
