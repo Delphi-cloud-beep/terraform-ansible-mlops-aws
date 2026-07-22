@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # --- Service MLflow ---
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.10.0
+    container_name: mlflow_server
+    ports:
+      - "5000:5000"
+    command: mlflow server --host 0.0.0.0 --port 5000
+    restart: always
+
+  # --- Service Prometheus (Monitoring) ---
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus_server
+    ports:
+      - "9090:9090"
+    restart: always
+
+  # --- Service Grafana (Dashboarding) ---
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_server
+    ports:
+      - "3000:3000"
+    restart: always

@@ -1,0 +1,9 @@
+---
+- name: Provisionnement et déploiement du serveur MLOps
+  hosts: mlops_servers
+  become: true
+
+  roles:
+    - common
+    - docker
+    - mlops_stack

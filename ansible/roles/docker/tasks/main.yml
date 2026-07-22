@@ -1,0 +1,19 @@
+---
+- name: Installer Docker et le plugin Docker Compose
+  apt:
+    name:
+      - docker.io
+      - docker-compose-plugin
+    state: present
+
+- name: S'assurer que le service Docker est démarré et activé
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Ajouter l'utilisateur ubuntu au groupe docker
+  user:
+    name: ubuntu
+    groups: docker
+    append: yes

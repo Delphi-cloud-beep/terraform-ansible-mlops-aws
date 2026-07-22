@@ -1,0 +1,17 @@
+---
+- name: Mettre à jour le cache des paquets apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Installer les outils système de base
+  apt:
+    name:
+      - curl
+      - git
+      - wget
+      - unzip
+      - ca-certificates
+      - gnupg
+      - lsb-release
+    state: present

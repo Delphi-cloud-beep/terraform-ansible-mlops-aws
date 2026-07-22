@@ -1,0 +1,21 @@
+---
+- name: Créer le dossier pour la stack applicative MLOps
+  file:
+    path: /opt/mlops-stack
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+
+- name: Copier le fichier docker-compose.yml sur le serveur
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/mlops-stack/docker-compose.yml
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+
+- name: Lancer la stack MLOps avec Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: /opt/mlops-stack
+    state: present
