@@ -13,7 +13,7 @@ variable "environment" {
 variable "instance_type" {
   description = "Taille de l'instance EC2"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.micro"
 }
 
 variable "public_key" {
