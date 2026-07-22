@@ -16,8 +16,7 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
-variable "public_key_path" {
-  description = "Chemin vers la clé SSH publique"
+variable "public_key" {
+  description = "Contenu brut de la clé SSH publique"
   type        = string
-  default     = "~/.ssh/id_rsa.pub"
 }
