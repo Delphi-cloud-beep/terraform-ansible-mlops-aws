@@ -32,13 +32,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
 
-      # 2. Exécuter Terraform en lui passant la clé publique et -input=false
+      # 2. Exécuter Terraform avec -lock=false pour passe le verrou bloqué
       - name: Terraform Init & Apply
         id: terraform
         run: |
           cd terraform
           terraform init
-          terraform apply -auto-approve -input=false -var="public_key=$(cat ~/.ssh/id_rsa.pub)"
+          terraform apply -auto-approve -input=false -lock=false -var="public_key=$(cat ~/.ssh/id_rsa.pub)"
           echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
 
       - name: Install Ansible
