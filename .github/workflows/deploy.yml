@@ -24,7 +24,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-3
 
-      # 1. Générer et configurer la clé SSH en PREMIER
+      # 1. Configuration de la clé SSH
       - name: Set up SSH Key
         run: |
           mkdir -p ~/.ssh
@@ -32,20 +32,29 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
 
-      # 2. Exécuter Terraform avec -lock=false pour passer le verrou bloqué
-      - name: Terraform Init & Apply
-        id: terraform
+      # 2. Validation & Initialisation Terraform
+      - name: Terraform Init, Format Check & Validate
         run: |
           cd terraform
           terraform init
-          terraform apply -auto-approve -input=false -lock=false -var="public_key=$(cat ~/.ssh/id_rsa.pub)"
+          terraform fmt -check
+          terraform validate
+
+      # 3. Exécution de Terraform Apply (sans -lock=false)
+      - name: Terraform Apply
+        id: terraform
+        run: |
+          cd terraform
+          terraform apply -auto-approve -input=false -var="public_key=$(cat ~/.ssh/id_rsa.pub)"
           echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
 
+      # 4. Installation d'Ansible
       - name: Install Ansible
         run: |
           sudo apt update
           sudo apt install -y ansible
 
+      # 5. Déploiement Ansible
       - name: Run Ansible Playbook
         run: |
           cd ansible
