@@ -1,8 +1,9 @@
 # Security Group (Pare-feu)
 resource "aws_security_group" "mlops_sg" {
   name        = "mlops-sg-${var.environment}"
-  description = "Autoriser SSH, MLflow, Prometheus et Grafana"
+  description = "Autoriser SSH, MLflow, Prometheus, Grafana et API FastAPI"
 
+  # SSH
   ingress {
     from_port   = 22
     to_port     = 22
@@ -10,6 +11,7 @@ resource "aws_security_group" "mlops_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Grafana
   ingress {
     from_port   = 3000
     to_port     = 3000
@@ -17,6 +19,7 @@ resource "aws_security_group" "mlops_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Prometheus
   ingress {
     from_port   = 9090
     to_port     = 9090
@@ -24,9 +27,18 @@ resource "aws_security_group" "mlops_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # MLflow
   ingress {
     from_port   = 5000
     to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # API FastAPI
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
