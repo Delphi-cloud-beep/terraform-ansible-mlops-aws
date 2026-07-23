@@ -1,7 +1,11 @@
 # Security Group (Pare-feu)
 resource "aws_security_group" "mlops_sg" {
-  name        = "mlops-sg-${var.environment}"
+  name_prefix = "mlops-sg-${var.environment}-"
   description = "Autoriser SSH, MLflow, Prometheus, Grafana et API FastAPI"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   # SSH
   ingress {
@@ -62,6 +66,12 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+# Clé SSH pour l'accès EC2
+resource "aws_key_pair" "mlops_key" {
+  key_name   = "mlops-key"
+  public_key = var.public_key
+}
+
 # Serveur EC2
 resource "aws_instance" "mlops_server" {
   ami           = data.aws_ami.ubuntu.id
@@ -80,9 +90,4 @@ resource "aws_instance" "mlops_server" {
 resource "aws_s3_bucket" "ml_artifacts" {
   bucket        = "mlops-artifacts-delphi-cloud-beep-${var.environment}"
   force_destroy = true
-}
-
-resource "aws_key_pair" "mlops_key" {
-  key_name   = "mlops-key"
-  public_key = var.public_key
 }

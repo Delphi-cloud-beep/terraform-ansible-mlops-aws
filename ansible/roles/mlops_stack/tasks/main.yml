@@ -7,6 +7,14 @@
     group: ubuntu
     mode: "0755"
 
+- name: Copier l'application Python et le Dockerfile sur le serveur
+  copy:
+    src: "../app/"
+    dest: /opt/mlops-stack/app/
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+
 - name: Copier le fichier docker-compose.yml sur le serveur
   template:
     src: docker-compose.yml.j2
@@ -19,3 +27,4 @@
   community.docker.docker_compose_v2:
     project_src: /opt/mlops-stack
     state: present
+    build: always

@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  # --- Service Application API (FastAPI) ---
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: mlops_api
+    ports:
+      - "8000:8000"
+    restart: always
+
   # --- Service MLflow ---
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.10.0
