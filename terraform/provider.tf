@@ -8,11 +8,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket       = "terraform-state-mlops-delphi-cloud-beep"
-    key          = "mlops/terraform.tfstate"
-    region       = "eu-west-3"
+    bucket         = "terraform-state-mlops-delphi-cloud-beep"
+    key            = "mlops/terraform.tfstate"
+    region         = "eu-west-3"
     dynamodb_table = "terraform-state-locks"
-    encrypt      = true
+    encrypt        = true
   }
 }
 
